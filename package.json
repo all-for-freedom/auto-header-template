@@ -26,6 +26,11 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
+  "icon": "ath.png",
+  "galleryBanner": {
+    "color": "#2D2D2D",
+    "theme": "dark"
+  },
   "contributes": {
     "configuration": {
       "title": "Auto Header Template",
