@@ -1,14 +1,67 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as os from 'os';
 
-// 获取配置
+// 获取系统用户名
+function getSystemUsername(): string {
+	try {
+		// 优先使用 os.userInfo()，跨平台
+		const userInfo = os.userInfo();
+		if (userInfo && userInfo.username) {
+			return userInfo.username;
+		}
+	} catch (error) {
+		// 如果失败，尝试从环境变量获取
+	}
+	
+	// 尝试从环境变量获取（Windows 使用 USERNAME，Unix/Linux/macOS 使用 USER）
+	const username = process.env.USER || process.env.USERNAME;
+	if (username) {
+		return username;
+	}
+	
+	// 如果都获取不到，返回默认值
+	return 'User';
+}
+
+// 获取配置（智能判断：如果用户没有配置，使用系统用户名）
 function getConfig(): { enabled: boolean; author: string; university: string; email: string; templates: { [key: string]: string } } {
 	const config = vscode.workspace.getConfiguration('autoHeaderTemplate');
+	const systemUsername = getSystemUsername();
+	
+	// 获取配置值，如果用户没有配置（即等于默认值），且默认值不是系统用户名，则使用系统用户名
+	const defaultAuthor = 'Shen Yang';
+	const defaultUniversity = 'Hunan Normal University';
+	const defaultEmail = 'yangshen@hunnu.edu.cn';
+	
+	let author = config.get<string>('author', defaultAuthor);
+	let university = config.get<string>('university', defaultUniversity);
+	let email = config.get<string>('email', defaultEmail);
+	
+	// 检查是否使用的是默认值（即用户从未配置过）
+	// 如果使用的是默认值且系统用户名不是默认值，则使用系统用户名
+	// 注意：这里需要检查实际配置值是否等于默认值，但 VS Code 的 get 方法会返回默认值
+	// 所以我们需要检查配置是否真的存在
+	const authorValue = config.inspect('author');
+	const universityValue = config.inspect('university');
+	const emailValue = config.inspect('email');
+	
+	// 如果全局和工作区配置都不存在，说明用户从未配置过，使用系统用户名
+	if (!authorValue?.globalValue && !authorValue?.workspaceValue) {
+		author = systemUsername;
+	}
+	if (!universityValue?.globalValue && !universityValue?.workspaceValue) {
+		university = 'Your Organization';
+	}
+	if (!emailValue?.globalValue && !emailValue?.workspaceValue) {
+		email = `${systemUsername}@example.com`;
+	}
+	
 	return {
 		enabled: config.get<boolean>('enabled', true),
-		author: config.get<string>('author', 'Shen Yang'),
-		university: config.get<string>('university', 'Hunan Normal University'),
-		email: config.get<string>('email', 'yangshen@hunnu.edu.cn'),
+		author,
+		university,
+		email,
 		templates: config.get<{ [key: string]: string }>('templates', {})
 	};
 }
@@ -153,8 +206,86 @@ async function insertTemplate(uri: vscode.Uri, template: string) {
 	}
 }
 
+// 配置向导
+async function showConfigurationWizard(context: vscode.ExtensionContext) {
+	const systemUsername = getSystemUsername();
+	
+	// 显示欢迎消息和配置提示
+	const action = await vscode.window.showInformationMessage(
+		`欢迎使用 Auto Header Template！检测到您的系统用户名为 "${systemUsername}"。是否现在配置个人信息？`,
+		'立即配置',
+		'稍后配置'
+	);
+	
+	if (action === '立即配置') {
+		// 询问作者名称（默认使用系统用户名）
+		const author = await vscode.window.showInputBox({
+			prompt: '请输入您的姓名（或按 Enter 使用系统用户名）',
+			placeHolder: systemUsername,
+			value: systemUsername,
+			ignoreFocusOut: true
+		});
+		
+		if (author === undefined) {
+			// 用户取消了
+			return;
+		}
+		
+		// 询问大学/机构
+		const university = await vscode.window.showInputBox({
+			prompt: '请输入您的大学/机构名称（可选，按 Enter 跳过）',
+			placeHolder: 'Your Organization',
+			ignoreFocusOut: true
+		});
+		
+		// 询问邮箱
+		const email = await vscode.window.showInputBox({
+			prompt: '请输入您的邮箱地址（可选，按 Enter 跳过）',
+			placeHolder: `${systemUsername}@example.com`,
+			value: `${systemUsername}@example.com`,
+			ignoreFocusOut: true
+		});
+		
+		// 保存配置
+		const config = vscode.workspace.getConfiguration('autoHeaderTemplate');
+		await config.update('author', author || systemUsername, vscode.ConfigurationTarget.Global);
+		if (university) {
+			await config.update('university', university, vscode.ConfigurationTarget.Global);
+		}
+		if (email) {
+			await config.update('email', email, vscode.ConfigurationTarget.Global);
+		}
+		
+		vscode.window.showInformationMessage('配置已保存！现在创建新文件时会自动使用这些信息。');
+	}
+	
+	// 标记已显示过配置向导
+	await context.globalState.update('autoHeaderTemplate.hasShownWizard', true);
+}
+
 export function activate(context: vscode.ExtensionContext) {
 	console.log('auto-header-template 扩展已激活！');
+
+	// 检查是否需要显示配置向导（首次使用）
+	const hasShownWizard = context.globalState.get<boolean>('autoHeaderTemplate.hasShownWizard', false);
+	const config = vscode.workspace.getConfiguration('autoHeaderTemplate');
+	
+	// 检查用户是否配置过（如果从未配置，则显示向导）
+	const authorValue = config.inspect('author');
+	const hasConfigured = authorValue?.globalValue !== undefined || authorValue?.workspaceValue !== undefined;
+	
+	if (!hasShownWizard && !hasConfigured) {
+		// 延迟一下再显示，避免干扰启动
+		setTimeout(() => {
+			showConfigurationWizard(context);
+		}, 1000);
+	}
+
+	// 注册配置命令
+	const configureCommand = vscode.commands.registerCommand('autoHeaderTemplate.configure', () => {
+		showConfigurationWizard(context);
+	});
+	context.subscriptions.push(configureCommand);
 
 	// 监听文件创建事件
 	const fileWatcher = vscode.workspace.onDidCreateFiles(async (event) => {
