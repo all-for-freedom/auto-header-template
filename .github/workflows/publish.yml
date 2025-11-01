@@ -38,8 +38,8 @@ jobs:
       
       - name: Create Open VSX namespace (if needed)
         run: |
-          npx ovsx create-namespace all-for-freedom || true
-          # 如果 namespace 已存在，上面的命令会失败，但我们继续执行
+          # 静默创建 namespace，如果已存在则忽略
+          npx ovsx create-namespace all-for-freedom > /dev/null 2>&1 || echo "Namespace already exists or created successfully"
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
         continue-on-error: true
