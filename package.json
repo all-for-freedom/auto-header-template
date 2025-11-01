@@ -3,6 +3,7 @@
   "displayName": "Auto Header Template",
   "description": "Automatic generation of the file's template header.",
   "version": "0.0.1",
+  "publisher": "all-for-freedom",
   "author": "shenyang",
   "repository": {
     "type": "git",
