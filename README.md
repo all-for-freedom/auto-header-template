@@ -54,3 +54,7 @@ Python (.py), C/C++ (.c, .cpp, .h, .hpp), TypeScript/JavaScript (.ts, .tsx, .js,
 - 首次配置向导
 - 自动获取系统用户名
 - 自定义模板支持
+
+### 0.0.2
+
+修复了版本更新的工作流上的问题
