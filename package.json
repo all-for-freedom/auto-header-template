@@ -1,8 +1,21 @@
 {
   "name": "auto-header-template",
-  "displayName": "auto-header-template",
+  "displayName": "Auto Header Template",
   "description": "Automatic generation of the file's template header.",
   "version": "0.0.1",
+  "author": "shenyang",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/all-for-freedom/auto-header-template"
+  },
+  "homepage": "https://github.com/all-for-freedom",
+  "bugs": {
+    "url": "https://github.com/all-for-freedom/auto-header-template/issues"
+  },
+  "keywords": [
+    "auto",
+    "template"
+  ],
   "engines": {
     "vscode": "^1.105.0"
   },
