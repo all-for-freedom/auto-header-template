@@ -9,15 +9,41 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "auto-header-template.helloWorld",
-        "title": "Hello World"
+    "configuration": {
+      "title": "Auto Header Template",
+      "properties": {
+        "autoHeaderTemplate.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用/禁用自动插入文件头模板"
+        },
+        "autoHeaderTemplate.author": {
+          "type": "string",
+          "default": "Shen Yang",
+          "description": "模板中使用的作者名称"
+        },
+        "autoHeaderTemplate.university": {
+          "type": "string",
+          "default": "Hunan Normal University",
+          "description": "模板中使用的大学/机构名称"
+        },
+        "autoHeaderTemplate.email": {
+          "type": "string",
+          "default": "yangshen@hunnu.edu.cn",
+          "description": "模板中使用的邮箱地址"
+        },
+        "autoHeaderTemplate.templates": {
+          "type": "object",
+          "default": {},
+          "description": "自定义文件模板，按文件扩展名配置。支持变量：${fileName}, ${fileNameWithoutExt}, ${author}, ${university}, ${email}, ${datetime}, ${date}, ${dateISO}, ${year}, ${month}, ${day}。例如：{\".ts\": \"/**\\n * @file ${fileName}\\n * @author ${author}\\n * @date ${datetime}\\n */\"}"
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
