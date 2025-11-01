@@ -2,7 +2,7 @@
   "name": "auto-header-template",
   "displayName": "Auto Header Template",
   "description": "Automatic generation of the file's template header.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "all-for-freedom",
   "author": "shenyang",
   "repository": {
@@ -77,7 +77,10 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version"
   },
   "devDependencies": {
     "@types/vscode": "^1.105.0",
