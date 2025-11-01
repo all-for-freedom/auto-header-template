@@ -58,3 +58,7 @@ Python (.py), C/C++ (.c, .cpp, .h, .hpp), TypeScript/JavaScript (.ts, .tsx, .js,
 ### 0.0.2
 
 修复了版本更新的工作流上的问题
+
+### 0.0.3
+
+继续尝试修复 Cursor 发布问题
