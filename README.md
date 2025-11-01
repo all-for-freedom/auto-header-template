@@ -46,8 +46,9 @@ Python (.py), C/C++ (.c, .cpp, .h, .hpp), TypeScript/JavaScript (.ts, .tsx, .js,
 
 ## Release Notes
 
-### 0.0.1
+### 0.0.*
 
+#### 0.0.1
 初始版本发布
 - 自动为新创建的文件插入模板头
 - 支持多种编程语言
@@ -55,10 +56,14 @@ Python (.py), C/C++ (.c, .cpp, .h, .hpp), TypeScript/JavaScript (.ts, .tsx, .js,
 - 自动获取系统用户名
 - 自定义模板支持
 
-### 0.0.2
+#### 0.0.2
 
 修复了版本更新的工作流上的问题
 
-### 0.0.3
+#### 0.0.3
 
 继续尝试修复 Cursor 发布问题
+
+#### 0.0.4 
+
+修复 Cursor 发布时的命名冲突问题

@@ -37,10 +37,12 @@ jobs:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
       
       - name: Create Open VSX namespace (if needed)
-        run: npx ovsx create-namespace all-for-freedom
+        run: |
+          npx ovsx create-namespace all-for-freedom || true
+          # 如果 namespace 已存在，上面的命令会失败，但我们继续执行
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
-        continue-on-error: true  # 如果已存在会失败，继续执行
+        continue-on-error: true
       
       - name: Publish to Open VSX Registry
         run: npx ovsx publish --no-dependencies
