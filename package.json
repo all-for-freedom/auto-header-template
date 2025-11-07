@@ -2,7 +2,7 @@
   "name": "auto-header-template",
   "displayName": "Auto Header Template",
   "description": "Automatic generation of the file's template header.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "all-for-freedom",
   "author": "shenyang",
   "repository": {
@@ -27,7 +27,7 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
-  "icon": "ath.png",
+  "icon": "ath-128.png",
   "galleryBanner": {
     "color": "#2D2D2D",
     "theme": "dark"

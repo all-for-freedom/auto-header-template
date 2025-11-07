@@ -4,6 +4,12 @@ All notable changes to the "auto-header-template" extension will be documented i
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.6] - 2025-01-XX
+
+### Changed
+- 更新图标文件为 ath-128.png
+- 更新 Marketplace banner 图片为 hf-banner.png
+
 ## [0.0.1] - 2025-01-XX
 
 ### Added
