@@ -4,6 +4,12 @@ All notable changes to the "auto-header-template" extension will be documented i
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.8] - 2025-11-30
+
+### Changed
+- 使用高质量原图替换并优化图标和横幅图片
+- 删除冗余的大尺寸图片文件，减小插件体积
+
 ## [0.0.6] - 2025-11-07
 
 ### Changed
