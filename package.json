@@ -2,7 +2,7 @@
   "name": "auto-header-template",
   "displayName": "Auto Header Template",
   "description": "Automatic generation of the file's template header.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publisher": "all-for-freedom",
   "author": "shenyang",
   "repository": {
