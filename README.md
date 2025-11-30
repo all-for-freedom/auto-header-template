@@ -61,7 +61,7 @@ Python (.py), C/C++ (.c, .cpp, .h, .hpp), TypeScript/JavaScript (.ts, .tsx, .js,
 修复 Cursor 发布问题
 修复 Cursor 发布时的命名冲突问题
 
-### 0.0.6 - 0.0.7
+### 0.0.6 - 0.0.9
 
 压缩了 图标 和 横幅的图片，极大减小了插件本体的大小
 
